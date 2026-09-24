@@ -1,0 +1,90 @@
+// Postgres schema for fresher-job-finder
+// Best default: Neon (https://neon.tech) free Postgres -> paste URL as DATABASE_URL
+// Works with: Neon, Supabase, local Docker postgres
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id               String       @id @default(cuid())
+  email            String       @unique
+  name             String
+  country          String       @default("IN") // Adzuna country code: in, us, gb, etc.
+  city             String       @default("")
+  remoteOnly       Boolean      @default(false)
+  jobType          String       @default("internship") // internship | entry | both
+  experienceYears  Float        @default(0)
+  summary          String       @default("")
+  githubUrl        String       @default("")
+  linkedinUrl      String       @default("")
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  skills           Skill[]
+  projects         Project[]
+  experiences      Experience[]
+  resumes          Resume[]
+}
+
+model Skill {
+  id        String  @id @default(cuid())
+  profileId String
+  name      String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+model Project {
+  id          String  @id @default(cuid())
+  profileId   String
+  title       String
+  description String  @default("")
+  techStack   String[] @default([])
+  link        String  @default("")
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+model Experience {
+  id          String  @id @default(cuid())
+  profileId   String
+  title       String
+  org         String  @default("")
+  description String  @default("")
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+model JobCache {
+  id          String   @id @default(cuid())
+  externalId  String   @unique
+  title       String
+  company     String   @default("")
+  location    String   @default("")
+  country     String   @default("IN")
+  description String   @default("")
+  url         String   @default("")
+  tags        String[] @default([])
+  source      String   @default("api")
+  createdAt   DateTime @default(now())
+}
+
+model Resume {
+  id          String   @id @default(cuid())
+  profileId   String?
+  profile     Profile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
+  jobTitle    String   @default("")
+  jobCompany  String   @default("")
+  jobDesc     String   @default("")
+  tailoredText String  @default("")
+  matchScore  Int      @default(0)
+  createdAt   DateTime @default(now())
+}

@@ -1,0 +1,357 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #080808;
+  --card: #101010;
+  --card-2: #141414;
+  --input: #0d0d0d;
+  --border: #262626;
+  --border-soft: #1c1c1c;
+  --text: #f5f5f5;
+  --muted: #8a8a8a;
+  --accent: #10b981;
+  --accent-hover: #0da271;
+  --accent-soft: rgba(16, 185, 129, 0.12);
+  --danger: #f87171;
+  --radius: 14px;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(16, 185, 129, 0.3);
+}
+
+/* ---------- surfaces ---------- */
+.fjf-card {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+}
+
+.fjf-card-hover {
+  transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+.fjf-card-hover:hover {
+  border-color: #333;
+  transform: translateY(-1px);
+}
+
+/* ---------- inputs ---------- */
+.fjf-input,
+.fjf-select,
+.fjf-textarea {
+  width: 100%;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.fjf-input::placeholder,
+.fjf-textarea::placeholder {
+  color: #5c5c5c;
+}
+.fjf-input:hover,
+.fjf-select:hover,
+.fjf-textarea:hover {
+  border-color: #333;
+}
+.fjf-input:focus-visible,
+.fjf-select:focus-visible,
+.fjf-textarea:focus-visible,
+.fjf-btn:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22);
+  outline: none;
+}
+.fjf-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+/* ---------- buttons ---------- */
+.fjf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.65rem 1.25rem;
+  min-height: 42px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease, opacity 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.fjf-btn:active {
+  transform: translateY(1px);
+}
+.fjf-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+.fjf-btn-primary {
+  background: var(--accent);
+  color: #04120c;
+}
+.fjf-btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+.fjf-btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+.fjf-btn-ghost:hover:not(:disabled) {
+  border-color: #3a3a3a;
+  background: #151515;
+}
+.fjf-btn-sm {
+  min-height: 34px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+/* ---------- chips / tags ---------- */
+.fjf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #161616;
+  border: 1px solid var(--border-soft);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+.fjf-chip-hit {
+  background: var(--accent-soft);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+.fjf-chip button {
+  color: var(--muted);
+  border-radius: 999px;
+  line-height: 1;
+  padding: 0 2px;
+}
+.fjf-chip button:hover {
+  color: var(--text);
+}
+
+/* ---------- segmented control ---------- */
+.fjf-seg {
+  display: inline-flex;
+  background: #0e0e0e;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+.fjf-seg button {
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  transition: all 0.15s ease;
+  min-height: 34px;
+}
+.fjf-seg button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.35);
+}
+.fjf-seg button:hover {
+  color: var(--text);
+}
+
+/* ---------- progress ---------- */
+.fjf-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #1d1d1d;
+  overflow: hidden;
+}
+.fjf-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0da271, #10b981);
+  transition: width 0.5s ease;
+}
+
+/* ---------- skeleton ---------- */
+@keyframes fjf-shimmer {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+.fjf-skeleton {
+  animation: fjf-shimmer 1.4s ease-in-out infinite;
+  background: #161616;
+  border-radius: 10px;
+}
+
+/* ---------- misc ---------- */
+.fjf-muted {
+  color: var(--muted);
+}
+.fjf-accent {
+  color: var(--accent);
+}
+.fjf-divider {
+  border-top: 1px solid var(--border-soft);
+}
+.fjf-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.fjf-match-ring {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- motion ---------- */
+@keyframes fjf-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fjf-enter {
+  animation: fjf-rise 0.55s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+}
+
+@keyframes fjf-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(26px, -20px) scale(1.08);
+  }
+}
+.fjf-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(70px);
+  opacity: 0.45;
+  animation: fjf-drift 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.fjf-gradient-text {
+  background: linear-gradient(100deg, #ffffff 15%, #10b981 60%, #6ee7b7 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fjf-btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.fjf-btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  transform: translateX(-130%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+.fjf-btn-primary:hover:not(:disabled)::after {
+  transform: translateX(130%);
+}
+
+/* animated match ring (SVG stroke animates via inline dashoffset transition) */
+.fjf-ring-svg circle.fjf-ring-bg {
+  stroke: #222;
+}
+.fjf-ring-svg circle.fjf-ring-fg {
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 0.8, 0.3, 1);
+  stroke-linecap: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- print: resume only ---------- */
+@media print {
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .print-doc {
+    border: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  /* The preview <pre> carries an explicit light color for dark mode —
+     force it (and every descendant) to black or the printout is blank. */
+  .print-doc,
+  .print-doc * {
+    color: #000 !important;
+    background: #fff !important;
+    border-color: #ddd !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+}
