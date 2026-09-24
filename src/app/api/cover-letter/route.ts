@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { matchProfileToJob } from "@/lib/matching";
 import { cleanJobText } from "@/lib/jobs";
+import { generateWithAI } from "@/lib/ai";
 import { rateLimited } from "@/lib/ratelimit";
 import type { Job, UserProfile } from "@/lib/types";
 
@@ -30,35 +31,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "profile + job required" }, { status: 400 });
 
     const match = matchProfileToJob(profile, job);
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    const model = process.env.CLAUDE_MODEL || "claude-sonnet-4-5";
+    const userMsg = `CANDIDATE:\nName: ${profile.name}\nEmail: ${profile.email}\nSkills: ${profile.skills.join(", ")}\nSummary: ${profile.summary}\nProjects: ${JSON.stringify(profile.projects.slice(0, 3))}\nExperience: ${JSON.stringify(profile.experience.slice(0, 3))}\n\nTARGET JOB:\nTitle: ${job.title}\nCompany: ${job.company}\nLocation: ${job.location}\nDescription:\n${cleanJobText(job.description || "", 3000)}\n\nMatch analysis:\n${JSON.stringify(match, null, 2)}\n\nWrite the cover letter now.`;
 
-    if (!apiKey) {
+    // Claude (paid) -> Gemini (free tier) -> local fallback
+    const gen = await generateWithAI({ system: SYSTEM, user: userMsg, maxTokens: 800 });
+    if (!gen) {
       const { localCoverLetter } = await import("@/lib/resume");
       return NextResponse.json({
         letter: localCoverLetter(profile, job),
         match,
-        engine: "local-fallback (add ANTHROPIC_API_KEY for Claude)",
+        engine: "local-fallback (add GEMINI_API_KEY for free AI or ANTHROPIC_API_KEY for Claude)",
       });
     }
 
-    const { default: Anthropic } = await import("@anthropic-ai/sdk");
-    const client = new Anthropic({ apiKey });
-    const userMsg = `CANDIDATE:\nName: ${profile.name}\nEmail: ${profile.email}\nSkills: ${profile.skills.join(", ")}\nSummary: ${profile.summary}\nProjects: ${JSON.stringify(profile.projects.slice(0, 3))}\nExperience: ${JSON.stringify(profile.experience.slice(0, 3))}\n\nTARGET JOB:\nTitle: ${job.title}\nCompany: ${job.company}\nLocation: ${job.location}\nDescription:\n${cleanJobText(job.description || "", 3000)}\n\nMatch analysis:\n${JSON.stringify(match, null, 2)}\n\nWrite the cover letter now.`;
-
-    const msg = await client.messages.create({
-      model,
-      max_tokens: 800,
-      system: SYSTEM,
-      messages: [{ role: "user", content: userMsg }],
-    });
-
-    const text = msg.content
-      .filter((b) => b.type === "text")
-      .map((b) => (b as unknown as { text: string }).text ?? "")
-      .join("\n");
-
-    return NextResponse.json({ letter: text, match, engine: `claude:${model}` });
+    return NextResponse.json({ letter: gen.text, match, engine: gen.engine });
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : "cover letter failed" },

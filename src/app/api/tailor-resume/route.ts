@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { matchProfileToJob } from "@/lib/matching";
 import { cleanJobText } from "@/lib/jobs";
+import { generateWithAI } from "@/lib/ai";
 import { rateLimited } from "@/lib/ratelimit";
 import type { Job, UserProfile } from "@/lib/types";
 
@@ -56,21 +57,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "profile + job required" }, { status: 400 });
 
     const match = matchProfileToJob(profile, job);
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    const model = process.env.CLAUDE_MODEL || "claude-sonnet-4-5";
 
-    if (!apiKey) {
-      // Fallback so app works without key
-      const { localTailor } = await import("@/lib/resume");
-      return NextResponse.json({
-        resume: localTailor(profile, job),
-        match,
-        engine: "local-fallback (add ANTHROPIC_API_KEY for Claude)",
-      });
-    }
-
-    const { default: Anthropic } = await import("@anthropic-ai/sdk");
-    const client = new Anthropic({ apiKey });
     const cleanDescription = cleanJobText(job.description || "", 4000);
     const existingResume = (profile.resumeText || "").trim().slice(0, 6000);
     const userMsg = `CANDIDATE PROFILE:\n${JSON.stringify({ ...profile, resumeText: undefined }, null, 2)}\n\n${
@@ -79,19 +66,18 @@ export async function POST(req: Request) {
         : `NO EXISTING RESUME — build one from the profile above.\n\n`
     }TARGET JOB:\nTitle: ${job.title}\nCompany: ${job.company}\nLocation: ${job.location}\nWork mode: ${job.workMode || "unknown"}\nDescription:\n${cleanDescription}\nTags: ${job.tags.join(", ")}\n\nMatch analysis:\n${JSON.stringify(match, null, 2)}\n\nWrite the tailored resume now.`;
 
-    const msg = await client.messages.create({
-      model,
-      max_tokens: 1500,
-      system: SYSTEM,
-      messages: [{ role: "user", content: userMsg }],
-    });
+    // Claude (paid) -> Gemini (free tier) -> local fallback
+    const gen = await generateWithAI({ system: SYSTEM, user: userMsg, maxTokens: 1500 });
+    if (!gen) {
+      const { localTailor } = await import("@/lib/resume");
+      return NextResponse.json({
+        resume: localTailor(profile, job),
+        match,
+        engine: "local-fallback (add GEMINI_API_KEY for free AI or ANTHROPIC_API_KEY for Claude)",
+      });
+    }
 
-    const text = msg.content
-      .filter((b) => b.type === "text")
-      .map((b) => (b as unknown as { text: string }).text ?? "")
-      .join("\n");
-
-    return NextResponse.json({ resume: text, match, engine: `claude:${model}` });
+    return NextResponse.json({ resume: gen.text, match, engine: gen.engine });
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : "tailor failed" },
