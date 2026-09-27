@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Launchly — Launching Your Career
 
-## Getting Started
+Skill-matched internships for freshers, with transparent match scores and AI-tailored resumes.
 
-First, run the development server:
+**How it works:** build your profile (skills, projects, experience, existing resume) → get jobs matched against real requirements with match % and reasons → generate a resume + cover letter tailored to the exact job → apply and track it in your pipeline.
+
+## Run it locally
+
+Prereqs: **Node.js 20+** and npm.
 
 ```bash
+git clone https://github.com/syeD-de/launchly.git
+cd launchly
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Works immediately with zero keys
+(rule-based tailoring + no-key job sources + labeled samples).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Full experience (optional keys)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env.local` and fill what you have:
 
-## Learn More
+| Key | Where | What it unlocks | Cost |
+|---|---|---|---|
+| `GEMINI_API_KEY` | [AI Studio](https://aistudio.google.com) (free, no billing) | AI resumes + cover letters | Free tier |
+| `ANTHROPIC_API_KEY` | [Anthropic Console](https://console.anthropic.com) | Best-quality resumes (takes priority) | Paid |
+| `ADZUNA_APP_ID` / `ADZUNA_APP_KEY` | [Adzuna Developers](https://developer.adzuna.com) | Live country-targeted jobs + salary + dates | Free tier |
 
-To learn more about Next.js, take a look at the following resources:
+Engine priority: Claude → Gemini → local fallback. Never commit real keys — `.env*` is git-ignored.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run dev` — local dev server
+- `npm run build` — production build (must pass before deploy)
+- `npm start` — serve the production build
+- `npm run lint` — eslint
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Import `syeD-de/launchly` on [Vercel](https://vercel.com) (Next.js preset), add the
+env vars above in the dashboard, Deploy. No database needed — profiles live in the browser.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Stack
+
+Next.js 16 · React 19 · Tailwind 4 · Prisma schema included (unused at runtime — local-first by design)
