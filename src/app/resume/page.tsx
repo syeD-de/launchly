@@ -254,8 +254,15 @@ export default function ResumePage() {
         {match && <MatchBadge score={match.score} />}
       </Card>
 
-      {coverage && (
-        <Card className="p-5">
+      {!profile.name.trim() && profile.skills.length === 0 && profile.projects.length === 0 && (
+        <Card className="border-amber-400/30 p-5">
+          <p className="text-sm"><strong>Your profile is empty</strong> — so this resume is thin and the match is low. That&apos;s expected, not a bug.</p>
+          <p className="fjf-muted mt-1 text-sm">Add your name, 5+ skills, and one project (10 minutes), then regenerate — watch the score and sections transform.</p>
+          <Link href="/profile" className="fjf-btn fjf-btn-primary fjf-btn-sm mt-3">Complete my profile →</Link>
+        </Card>
+      )}
+
+      {coverage && (        <Card className="p-5">
           <div className="flex items-baseline justify-between gap-3">
             <h2 className="text-sm font-semibold">🎯 Keyword coverage (ATS check)</h2>
             <span className="fjf-match-ring text-sm font-bold">{coverage.pct}% · {coverage.hit}/{coverage.total}</span>

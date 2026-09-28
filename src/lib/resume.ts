@@ -51,7 +51,10 @@ export function localTailor(profile: UserProfile, job: Job): string {
   const lines: string[] = [];
   lines.push("### 1. FINAL RESUME");
   lines.push(`${profile.name || "Your Name"}`);
-  const place = [profile.city, countryName(profile.country)].filter(Boolean).join(", ");
+  // A lone country ("India") is noise on a resume — only show place with a city.
+  const place = profile.city.trim()
+    ? [profile.city.trim(), countryName(profile.country)].filter(Boolean).join(", ")
+    : "";
   const contact = [
     place || null,
     profile.phone ? `Phone: ${profile.phone}` : null,
@@ -72,7 +75,10 @@ export function localTailor(profile: UserProfile, job: Job): string {
   }
   lines.push("");
   lines.push("TECHNICAL SKILLS");
-  lines.push(`Programming: ${orderedSkills(profile, m).join(", ") || "-"}`);
+  const skillsLine = orderedSkills(profile, m).join(", ");
+  lines.push(
+    `Programming: ${skillsLine || "Add your skills on the Profile page - they appear here, matched-first"}`
+  );
   lines.push("");
   lines.push("SUMMARY");
   lines.push(tailoredSummary(profile, job, m.matchedSkills));
@@ -116,6 +122,14 @@ export function localTailor(profile: UserProfile, job: Job): string {
 }
 
 function whyItFits(profile: UserProfile, job: Job, matched: string[]): string {
+  const company = job.company || "the company";
+  if (!matched.length)
+    return (
+      `Honest assessment: this profile currently shows low overlap with ${job.title} ` +
+      `(see REMAINING GAPS). The resume still names the exact role at ${company}, ` +
+      `but the fastest lever is adding one small project built with the top missing ` +
+      `skills - then regenerate.`
+    );
   const parts: string[] = [];
   if (matched.length)
     parts.push(
@@ -153,13 +167,18 @@ function lastMinuteImprovements(
       `Skim "${missing[1]}" basics so you can speak to it in a screening call, and name it as "currently learning" in your cover letter.`
     );
   const proj = profile.projects[0];
-  if (proj)
+  if (proj) {
     out.push(
       `Add one measurable line to "${proj.title}" (users, speed, scope) - numbers survive the 10-second skim.`
     );
-  out.push(
-    `Fix your GitHub README for your best project: what it does, how to run it, one screenshot.`
-  );
+    out.push(
+      `Fix your GitHub README for your best project: what it does, how to run it, one screenshot.`
+    );
+  } else {
+    out.push(
+      `Add one project - even a weekend build using "${missing[0] || "the top gap skill"}" - then regenerate. Proof of work beats keywords.`
+    );
+  }
   if (matched.length)
     out.push(
       `Mirror 2-3 exact keywords from the posting (${matched.slice(0, 3).join(", ")}) in your summary - same words, honest claims.`
