@@ -20,6 +20,12 @@ export default function ProfilePage() {
   const [editingExp, setEditingExp] = useState<number | null>(null);
   const [resumeFileError, setResumeFileError] = useState("");
   const [confirmWipe, setConfirmWipe] = useState(false);
+  // First paint must match the server exactly (it has no localStorage) —
+  // anything cache-dependent waits until after mount, or hydration breaks.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const skipAutosave = useRef(true);
 
@@ -251,7 +257,9 @@ export default function ProfilePage() {
   }
 
   // Skills employers actually ask for in your cached matches — one-click add.
+  // Mount-gated: localStorage doesn't exist during server render.
   const skillSuggestions = useMemo(() => {
+    if (!mounted) return [];
     try {
       const raw = localStorage.getItem("fjf-jobs-cache");
       if (!raw) return [];
@@ -271,7 +279,7 @@ export default function ProfilePage() {
       return [];
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [p.skills.join("|")]);
+  }, [mounted, p.skills.join("|")]);
 
   const checklist = useMemo(() => {
     const goodProjects = p.projects.filter((x) => x.title.trim() && x.techStack.length > 0).length;
