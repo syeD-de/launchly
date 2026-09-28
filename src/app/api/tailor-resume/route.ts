@@ -8,10 +8,10 @@ import type { Job, UserProfile } from "@/lib/types";
 const SYSTEM = `You are an expert resume writer for freshers/interns.
 Rewrite the candidate's resume, SUPER tailored to the specific job described below.
 Rules:
-- Keep it truthful: do not invent jobs, degrees, dates, or metrics. You may rephrase and emphasize relevant skills/projects.
+- Keep it truthful: do not invent jobs, degrees, dates, phones, links, or metrics. You may rephrase and emphasize relevant skills/projects.
 - If an EXISTING RESUME is provided, tailor THAT resume: preserve its real content and structure, reorder skills so matched ones come first, rewrite bullets to mirror job keywords (action verbs, scope).
 - If no existing resume is given, build one from the profile: lead with a 2-line summary naming the target role + top 3 matching skills.
-- Include a LINKS line under the name with the candidate's GitHub/LinkedIn URLs when provided (use them exactly as given, do not invent URLs).
+- Use profile links/phones/education exactly as given; omit any line you don't have data for. Never invent URLs.
 - Keep the resume itself to one page (~450 words max).
 
 FINAL REVIEW
@@ -31,6 +31,30 @@ Give exactly:
 ### 1. FINAL RESUME
 The complete one-page resume, ready to copy into Word/Google Docs.
 Do not put explanations inside the resume.
+Follow this blueprint skeleton exactly (plain text, omit any section with no content):
+
+<NAME>
+<City>, <Country> | Phone: <phone>
+LinkedIn: <url>  |  GitHub: <url>
+
+EDUCATION
+<Degree>
+<College>  /  <Year>
+
+TECHNICAL SKILLS
+Programming: <hard skills, matched-first>
+Development Approach: <how they build: prototyping, debugging, iteration — only if true>
+Design: <design skills, if any>
+Other: <everything else relevant>
+
+PROJECTS
+<Project Title>  /  <Ongoing or year, if known>
+- 3-4 bullets per project: action verb + what was built + tech + outcome or scope. Mirror job keywords where truthful.
+
+LEADERSHIP & RESPONSIBILITY
+<Role>  /  <Organization>
+- Bullets from experience, angled at the target job. Only if experience exists.
+
 ### 2. WHY THIS RESUME FITS
 Briefly explain how the resume was tailored specifically for the advertised position and company.
 ### 3. REMAINING GAPS

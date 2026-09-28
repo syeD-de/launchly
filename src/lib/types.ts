@@ -3,6 +3,7 @@ export type JobType = "internship" | "entry" | "both";
 export interface UserProfile {
   name: string;
   email: string;
+  phone?: string;
   country: string; // adzuna code: in, us, gb...
   city: string;
   remoteOnly: boolean;
@@ -12,6 +13,12 @@ export interface UserProfile {
   summary: string;
   githubUrl?: string;
   linkedinUrl?: string;
+  /** Education block for the resume header (degree/college/year). */
+  education?: {
+    degree: string;
+    college: string;
+    year: string;
+  };
   /** User's existing resume (pasted or uploaded). Used as the base for tailoring. */
   resumeText?: string;
   projects: {

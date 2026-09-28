@@ -1,5 +1,10 @@
 import type { Job, UserProfile } from "./types";
+import { COUNTRY_OPTIONS } from "./types";
 import { matchProfileToJob } from "./matching";
+
+function countryName(code: string): string {
+  return COUNTRY_OPTIONS.find((c) => c.code === (code || "").toLowerCase())?.label || "";
+}
 
 // Rule-based fallback when ANTHROPIC_API_KEY is missing.
 // Mirrors the Claude output structure (FINAL RESUME / WHY IT FITS /
@@ -46,23 +51,42 @@ export function localTailor(profile: UserProfile, job: Job): string {
   const lines: string[] = [];
   lines.push("### 1. FINAL RESUME");
   lines.push(`${profile.name || "Your Name"}`);
-  if (profile.email) lines.push(profile.email);
-  const links = [profile.githubUrl?.trim(), profile.linkedinUrl?.trim()].filter(Boolean);
-  if (links.length) lines.push(links.join(" | "));
+  const place = [profile.city, countryName(profile.country)].filter(Boolean).join(", ");
+  const contact = [
+    place || null,
+    profile.phone ? `Phone: ${profile.phone}` : null,
+  ].filter(Boolean).join(" | ");
+  if (contact) lines.push(contact);
+  const links = [
+    profile.linkedinUrl?.trim() ? `LinkedIn: ${profile.linkedinUrl.trim()}` : null,
+    profile.githubUrl?.trim() ? `GitHub: ${profile.githubUrl.trim()}` : null,
+  ].filter(Boolean);
+  if (links.length) lines.push(links.join("  |  "));
+  const edu = profile.education;
+  if (edu && (edu.degree || edu.college)) {
+    lines.push("");
+    lines.push("EDUCATION");
+    if (edu.degree) lines.push(edu.degree);
+    const second = [edu.college, edu.year].filter(Boolean).join("  /  ");
+    if (second) lines.push(second);
+  }
+  lines.push("");
+  lines.push("TECHNICAL SKILLS");
+  lines.push(`Programming: ${orderedSkills(profile, m).join(", ") || "—"}`);
   lines.push("");
   lines.push("SUMMARY");
   lines.push(tailoredSummary(profile, job, m.matchedSkills));
-  lines.push("");
-  lines.push("SKILLS");
-  lines.push(orderedSkills(profile, m).join(" • ") || "—");
   if (profile.experience.length) {
     lines.push("");
-    lines.push("EXPERIENCE");
+    lines.push("LEADERSHIP & RESPONSIBILITY");
     for (const e of profile.experience.slice(0, 3)) {
-      lines.push(`- ${e.title || "Role"} — ${e.org || "Organization"}`);
-      if (e.description) lines.push(`  ${e.description}`);
-      const overlap = m.matchedSkills.slice(0, 3).join(", ");
-      if (overlap) lines.push(`  Relevance to "${job.title}": involved ${overlap}.`);
+      lines.push(`${e.title || "Role"}  /  ${e.org || "Organization"}`);
+      if (e.description) lines.push(`- ${e.description}`);
+      const entryHay = `${e.title} ${e.org} ${e.description}`.toLowerCase();
+      const relevant = m.matchedSkills
+        .filter((s) => entryHay.includes(s.toLowerCase()))
+        .slice(0, 3);
+      if (relevant.length) lines.push(`- Relevance to "${job.title}": draws on ${relevant.join(", ")}.`);
     }
   }
   lines.push("");
@@ -73,10 +97,11 @@ export function localTailor(profile: UserProfile, job: Job): string {
   }
   for (const p of projs) {
     const tech = p.techStack.join(", ");
-    lines.push(`- ${p.title || "Untitled project"}${tech ? ` [${tech}]` : ""}`);
-    if (p.description) lines.push(`  ${p.description}`);
-    lines.push(`  ${projectAngle(p.techStack, job, m.matchedSkills)}`);
-    if (p.link) lines.push(`  Code: ${p.link}`);
+    lines.push(`${p.title || "Untitled project"}`);
+    if (p.description) lines.push(`- ${p.description}`);
+    if (tech) lines.push(`- Built with ${tech}.`);
+    lines.push(`- ${projectAngle(p.techStack, job, m.matchedSkills)}`);
+    if (p.link) lines.push(`- Code: ${p.link}`);
   }
   lines.push("");
   lines.push(`### 2. WHY THIS RESUME FITS ${company.toUpperCase()}`);

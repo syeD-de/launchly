@@ -291,6 +291,10 @@ export default function ProfilePage() {
                 <FieldError message={errors.email} />
               </div>
               <div>
+                <label className="fjf-label" htmlFor="pf-phone">Phone (for resume header)</label>
+                <input id="pf-phone" className="fjf-input" type="tel" value={p.phone || ""} onChange={(e) => update("phone", e.target.value)} placeholder="9962286098" autoComplete="tel" />
+              </div>
+              <div>
                 <label className="fjf-label" htmlFor="pf-country">Country / job market</label>
                 <select id="pf-country" className="fjf-select" value={p.country} onChange={(e) => update("country", e.target.value)}>
                   {COUNTRY_OPTIONS.map((c) => (
@@ -301,6 +305,28 @@ export default function ProfilePage() {
               <div>
                 <label className="fjf-label" htmlFor="pf-city">City</label>
                 <input id="pf-city" className="fjf-input" value={p.city} onChange={(e) => update("city", e.target.value)} placeholder="Bengaluru" autoComplete="address-level2" />
+              </div>
+            </div>
+          </Card>
+
+          {/* Education */}
+          <Card className="p-5 sm:p-6">
+            <h2 className="font-semibold">🎓 Education</h2>
+            <p className="fjf-muted mt-1 text-xs leading-5">
+              Shown at the top of every generated resume, exactly like a real header block.
+            </p>
+            <div className="mt-3 grid gap-4 sm:grid-cols-3">
+              <div>
+                <label className="fjf-label" htmlFor="pf-degree">Degree</label>
+                <input id="pf-degree" className="fjf-input" value={p.education?.degree || ""} onChange={(e) => update("education", { degree: e.target.value, college: p.education?.college || "", year: p.education?.year || "" })} placeholder="B.Tech in AI and Machine Learning" />
+              </div>
+              <div>
+                <label className="fjf-label" htmlFor="pf-college">College</label>
+                <input id="pf-college" className="fjf-input" value={p.education?.college || ""} onChange={(e) => update("education", { degree: p.education?.degree || "", college: e.target.value, year: p.education?.year || "" })} placeholder="SRM Institute of Science and Technology" />
+              </div>
+              <div>
+                <label className="fjf-label" htmlFor="pf-year">Year / status</label>
+                <input id="pf-year" className="fjf-input" value={p.education?.year || ""} onChange={(e) => update("education", { degree: p.education?.degree || "", college: p.education?.college || "", year: e.target.value })} placeholder="Second-Year Student" />
               </div>
             </div>
           </Card>
