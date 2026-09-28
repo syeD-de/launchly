@@ -14,6 +14,7 @@ import {
 } from "@/lib/resume";
 import { timeAgo } from "@/lib/format";
 import { getStatus, setJobStatus, type AppStatus } from "@/lib/tracker";
+import { GeneratedDoc } from "@/components/ResumeDoc";
 import type { Job, UserProfile } from "@/lib/types";
 
 type Status = "idle" | "working" | "done" | "error";
@@ -426,12 +427,14 @@ export default function ResumePage() {
             </Card>
           )}
           {resume && (
-            <Card className="print-doc overflow-hidden p-0">
+            <>
               <div className="border-b border-[#1c1c1c] px-6 py-3 no-print">
                 <p className="fjf-kicker">Preview · {profile.name || "Your resume"} → {job.title}</p>
               </div>
-              <pre className="whitespace-pre-wrap px-6 py-5 text-sm leading-7 text-[#e8e8e8]">{resume}</pre>
-            </Card>
+              <div className="px-2 py-4 sm:px-4">
+                <GeneratedDoc text={resume} />
+              </div>
+            </>
           )}
           {letter && (
             <Card className="overflow-hidden p-0">

@@ -160,8 +160,52 @@ export default function ProfilePage() {
     }
   }
 
-  function wipeData() {
-    try {
+  function loadDemo() {
+    const demo: UserProfile = {
+      ...EMPTY_PROFILE,
+      name: "Aarav Sharma",
+      email: "aarav.sharma@mail.com",
+      phone: "9876543210",
+      country: "in",
+      city: "Bengaluru",
+      jobType: "internship",
+      skills: ["React", "JavaScript", "HTML", "CSS", "Git", "REST"],
+      summary: "CS fresher. Built 3 web apps with React + Node. Looking for a frontend internship where I can ship real UI.",
+      githubUrl: "https://github.com/aaravsharma",
+      education: {
+        degree: "B.Tech in Computer Science",
+        college: "Visvesvaraya Technological University",
+        year: "Third-Year Student",
+      },
+      projects: [
+        {
+          title: "Shop UI",
+          description: "Store front with cart, filters, and checkout flow. Used by 200+ classmates during a campus fest.",
+          techStack: ["React", "JavaScript", "CSS"],
+          link: "https://github.com/aaravsharma/shop-ui",
+          demoUrl: "",
+        },
+        {
+          title: "Notes API",
+          description: "REST API with auth and search. Handles 1k+ requests in load tests without errors.",
+          techStack: ["JavaScript", "REST", "SQL"],
+          link: "",
+          demoUrl: "",
+        },
+      ],
+      experience: [
+        {
+          title: "Web Dev Volunteer",
+          org: "College Tech Club",
+          description: "Shipped event pages with a team of 4; fixed bugs the night before fest.",
+        },
+      ],
+    };
+    setP(demo);
+    setSaved(false);
+  }
+
+  function wipeData() {    try {
       const keys: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
@@ -252,6 +296,8 @@ export default function ProfilePage() {
           ) : (
             <span className="text-amber-300/90"> Unsaved changes…</span>
           )}
+          <br />
+          <button onClick={loadDemo} className="fjf-accent underline">Just exploring? Load demo data →</button>
         </p>
       </div>
 
