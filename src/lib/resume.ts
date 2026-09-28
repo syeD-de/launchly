@@ -21,20 +21,19 @@ export function localTailor(profile: UserProfile, job: Job): string {
       : "none major - profile covers the detected requirements";
   const improvements = lastMinuteImprovements(profile, job, m.matchedSkills);
 
-  // When the user already has a resume, tailor THAT instead of inventing one:
-  // keep their content verbatim and add a tailored header they can paste in.
+  // When the user already has a resume, section 1 is a clean merge kit:
+  // tailored header first, original untouched below a divider. No scores,
+  // no commentary inside the submittable part.
   if (baseResume) {
     const out: string[] = [];
     out.push("### 1. FINAL RESUME");
-    out.push(`(Tailored for ${job.title} @ ${company} - match ${m.score}/100)`);
-    out.push("");
-    out.push("TAILORED SUMMARY (paste at the top of your resume)");
     out.push(tailoredSummary(profile, job, m.matchedSkills));
     out.push("");
-    out.push("SKILLS TO LEAD WITH FOR THIS JOB");
-    out.push(orderedSkills(profile, m).join(", ") || profile.skills.join(", ") || "-");
-    out.push("");
-    out.push("YOUR ORIGINAL RESUME (unchanged - weave the keywords above into it)");
+    const leadSkills = orderedSkills(profile, m).join(", ");
+    if (leadSkills) {
+      out.push(leadSkills);
+      out.push("");
+    }
     out.push(baseResume.slice(0, 6000));
     out.push("");
     out.push(`### 2. WHY THIS RESUME FITS ${company.toUpperCase()}`);
@@ -73,12 +72,12 @@ export function localTailor(profile: UserProfile, job: Job): string {
     const second = [edu.college, edu.year].filter(Boolean).join("  /  ");
     if (second) lines.push(second);
   }
-  lines.push("");
-  lines.push("TECHNICAL SKILLS");
   const skillsLine = orderedSkills(profile, m).join(", ");
-  lines.push(
-    `Programming: ${skillsLine || "Add your skills on the Profile page - they appear here, matched-first"}`
-  );
+  if (skillsLine) {
+    lines.push("");
+    lines.push("TECHNICAL SKILLS");
+    lines.push(`Programming: ${skillsLine}`);
+  }
   lines.push("");
   lines.push("SUMMARY");
   lines.push(tailoredSummary(profile, job, m.matchedSkills));
@@ -88,25 +87,18 @@ export function localTailor(profile: UserProfile, job: Job): string {
     for (const e of profile.experience.slice(0, 3)) {
       lines.push(`${e.title || "Role"}  /  ${e.org || "Organization"}`);
       if (e.description) lines.push(`- ${e.description}`);
-      const entryHay = `${e.title} ${e.org} ${e.description}`.toLowerCase();
-      const relevant = m.matchedSkills
-        .filter((s) => entryHay.includes(s.toLowerCase()))
-        .slice(0, 3);
-      if (relevant.length) lines.push(`- Relevance to "${job.title}": draws on ${relevant.join(", ")}.`);
     }
   }
-  lines.push("");
-  lines.push("PROJECTS");
   const projs = profile.projects.slice(0, 3);
-  if (projs.length === 0) {
-    lines.push("- (Add a project on your Profile page - tailored resumes need proof of work.)");
+  if (projs.length > 0) {
+    lines.push("");
+    lines.push("PROJECTS");
   }
   for (const p of projs) {
     const tech = p.techStack.join(", ");
     lines.push(`${p.title || "Untitled project"}`);
     if (p.description) lines.push(`- ${p.description}`);
     if (tech) lines.push(`- Built with ${tech}.`);
-    lines.push(`- ${projectAngle(p.techStack, job, m.matchedSkills)}`);
     if (p.link) lines.push(`- Code: ${p.link}`);
   }
   lines.push("");
@@ -190,10 +182,12 @@ function tailoredSummary(profile: UserProfile, job: Job, matched: string[]): str
   const top = matched.slice(0, 3).join(", ");
   const base =
     profile.summary ||
-    `Fresher building with ${profile.skills.slice(0, 4).join(", ") || "modern web and data tools"}.`;
+    (profile.skills.length
+      ? `Fresher building with ${profile.skills.slice(0, 4).join(", ")}.`
+      : `Fresher seeking ${job.title}.`);
   return top
     ? `${base} Targeting ${job.title}: strongest overlap in ${top}.`
-    : `${base} Targeting ${job.title}: bringing transferable skills and fast learning.`;
+    : `${base} Targeting ${job.title}.`;
 }
 
 function orderedSkills(profile: UserProfile, m: ReturnType<typeof matchProfileToJob>): string[] {
@@ -207,16 +201,6 @@ function orderedSkills(profile: UserProfile, m: ReturnType<typeof matchProfileTo
     }
   }
   return out.slice(0, 15);
-}
-
-function projectAngle(techStack: string[], job: Job, matched: string[]): string {
-  const tech = new Set(techStack.map((t) => t.toLowerCase()));
-  const overlap = matched.filter((s) => tech.has(s.toLowerCase()));
-  if (overlap.length)
-    return `Why it fits "${job.title}": demonstrates ${overlap.slice(0, 4).join(", ")} from the job requirements.`;
-  if (matched.length)
-    return `Why it fits "${job.title}": transferable engineering from ${techStack.slice(0, 3).join(", ") || "this build"}; map it to ${matched.slice(0, 3).join(", ")} in interviews.`;
-  return `Relevance: shows end-to-end building ability applicable to "${job.title}".`;
 }
 
 export const PROFILE_KEY = "fjf-profile-v1";

@@ -14,6 +14,7 @@ Rules:
 - Use profile links/phones/education exactly as given; omit any line you don't have data for. Never invent URLs.
 - Keep the resume itself to one page (~450 words max).
 - ATS safety (applicant tracking systems parse this): plain ASCII only inside the resume — use "-" for bullets and "-" instead of dashes, no emoji, no symbols, no tables. Use standard section headings exactly as in the blueprint.
+- Section 1 purity: the FINAL RESUME must contain ONLY resume content — no match scores, no commentary like "why this fits", no instructions, no mention of any AI tool or service. Explanations belong in sections 2-4 only.
 
 FINAL REVIEW
 Before producing the final resume, internally evaluate it as:
