@@ -14,7 +14,7 @@ import {
 } from "@/lib/resume";
 import { timeAgo } from "@/lib/format";
 import { getStatus, setJobStatus, type AppStatus } from "@/lib/tracker";
-import { GeneratedDoc } from "@/components/ResumeDoc";
+import { GeneratedDoc, splitSections } from "@/components/ResumeDoc";
 import type { Job, UserProfile } from "@/lib/types";
 
 type Status = "idle" | "working" | "done" | "error";
@@ -159,6 +159,12 @@ export default function ResumePage() {
     } catch {
       // ignore
     }
+  }
+
+  /** Copy ONLY the submittable resume (section 1) — never the coaching notes. */
+  function copyResumeOnly() {
+    const first = splitSections(resume)[0];
+    if (first) copy(first.body, "resume");
   }
 
   function markApplied() {
@@ -352,8 +358,10 @@ export default function ResumePage() {
             </button>
             {resume && (
               <div className="mt-2 grid grid-cols-2 gap-2 no-print">
-                <button onClick={() => copy(resume, "resume")} className="fjf-btn fjf-btn-ghost fjf-btn-sm">{copied === "resume" ? "Copied ✓" : "Copy"}</button>
-                <button onClick={() => download(`${slug(job.title)}-resume.txt`, resume)} className="fjf-btn fjf-btn-ghost fjf-btn-sm">Download</button>
+                <button onClick={copyResumeOnly} className="fjf-btn fjf-btn-ghost fjf-btn-sm" title="Copies only the resume — not the coaching notes below it">
+                  {copied === "resume" ? "Copied ✓" : "Copy resume"}
+                </button>
+                <button onClick={() => download(`${slug(job.title)}-resume.txt`, resume)} className="fjf-btn fjf-btn-ghost fjf-btn-sm" title="Full record including coaching notes">Download all</button>
               </div>
             )}
             {resume && (

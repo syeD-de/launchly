@@ -111,18 +111,25 @@ function ResumeBody({ body }: { body: string }) {
   return <div className="px-6 py-6">{els}</div>;
 }
 
-/** Full generated document: styled resume + clean supporting sections. */
+/** Full generated document: the submittable resume + clearly-separated private notes. */
 export function GeneratedDoc({ text }: { text: string }) {
   const sections = splitSections(text);
   const [first, ...rest] = sections;
   return (
     <div className="space-y-4">
       <div>
-        <p className="fjf-kicker mb-2 no-print">{first.heading || "Resume"}</p>
+        <p className="fjf-kicker mb-2 no-print">
+          <span className="fjf-accent">📄 Submit this part</span> · {first.heading || "Resume"}
+        </p>
         <div className="fjf-card print-doc overflow-hidden">
           <ResumeBody body={first.body} />
         </div>
       </div>
+      {rest.length > 0 && (
+        <p className="fjf-kicker no-print">
+          🔒 Private coaching notes — <span className="text-amber-300/90">do NOT submit these</span>, they&apos;re advice for you only
+        </p>
+      )}
       {rest.map((s) => (
         <div key={s.heading}>
           <p className="fjf-kicker mb-2">{s.heading}</p>
