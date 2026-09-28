@@ -13,6 +13,7 @@ Rules:
 - If no existing resume is given, build one from the profile: lead with a 2-line summary naming the target role + top 3 matching skills.
 - Use profile links/phones/education exactly as given; omit any line you don't have data for. Never invent URLs.
 - Keep the resume itself to one page (~450 words max).
+- ATS safety (applicant tracking systems parse this): plain ASCII only inside the resume — use "-" for bullets and "-" instead of dashes, no emoji, no symbols, no tables. Use standard section headings exactly as in the blueprint.
 
 FINAL REVIEW
 Before producing the final resume, internally evaluate it as:
@@ -51,7 +52,7 @@ PROJECTS
 <Project Title>  /  <Ongoing or year, if known>
 - 3-4 bullets per project: action verb + what was built + tech + outcome or scope. Mirror job keywords where truthful.
 
-LEADERSHIP & RESPONSIBILITY
+LEADERSHIP EXPERIENCE
 <Role>  /  <Organization>
 - Bullets from experience, angled at the target job. Only if experience exists.
 

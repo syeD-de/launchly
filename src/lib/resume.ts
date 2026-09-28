@@ -18,7 +18,7 @@ export function localTailor(profile: UserProfile, job: Job): string {
   const gaps =
     m.missingSkills.length > 0
       ? m.missingSkills.slice(0, 5).join(", ")
-      : "none major — profile covers the detected requirements";
+      : "none major - profile covers the detected requirements";
   const improvements = lastMinuteImprovements(profile, job, m.matchedSkills);
 
   // When the user already has a resume, tailor THAT instead of inventing one:
@@ -26,15 +26,15 @@ export function localTailor(profile: UserProfile, job: Job): string {
   if (baseResume) {
     const out: string[] = [];
     out.push("### 1. FINAL RESUME");
-    out.push(`(Tailored for ${job.title} @ ${company} — match ${m.score}/100)`);
+    out.push(`(Tailored for ${job.title} @ ${company} - match ${m.score}/100)`);
     out.push("");
     out.push("TAILORED SUMMARY (paste at the top of your resume)");
     out.push(tailoredSummary(profile, job, m.matchedSkills));
     out.push("");
     out.push("SKILLS TO LEAD WITH FOR THIS JOB");
-    out.push(orderedSkills(profile, m).join(" • ") || profile.skills.join(" • ") || "—");
+    out.push(orderedSkills(profile, m).join(", ") || profile.skills.join(", ") || "-");
     out.push("");
-    out.push("YOUR ORIGINAL RESUME (unchanged — weave the keywords above into it)");
+    out.push("YOUR ORIGINAL RESUME (unchanged - weave the keywords above into it)");
     out.push(baseResume.slice(0, 6000));
     out.push("");
     out.push(`### 2. WHY THIS RESUME FITS ${company.toUpperCase()}`);
@@ -72,13 +72,13 @@ export function localTailor(profile: UserProfile, job: Job): string {
   }
   lines.push("");
   lines.push("TECHNICAL SKILLS");
-  lines.push(`Programming: ${orderedSkills(profile, m).join(", ") || "—"}`);
+  lines.push(`Programming: ${orderedSkills(profile, m).join(", ") || "-"}`);
   lines.push("");
   lines.push("SUMMARY");
   lines.push(tailoredSummary(profile, job, m.matchedSkills));
   if (profile.experience.length) {
     lines.push("");
-    lines.push("LEADERSHIP & RESPONSIBILITY");
+    lines.push("LEADERSHIP EXPERIENCE");
     for (const e of profile.experience.slice(0, 3)) {
       lines.push(`${e.title || "Role"}  /  ${e.org || "Organization"}`);
       if (e.description) lines.push(`- ${e.description}`);
@@ -93,7 +93,7 @@ export function localTailor(profile: UserProfile, job: Job): string {
   lines.push("PROJECTS");
   const projs = profile.projects.slice(0, 3);
   if (projs.length === 0) {
-    lines.push("- (Add a project on your Profile page — tailored resumes need proof of work.)");
+    lines.push("- (Add a project on your Profile page - tailored resumes need proof of work.)");
   }
   for (const p of projs) {
     const tech = p.techStack.join(", ");
@@ -146,7 +146,7 @@ function lastMinuteImprovements(
   const missing = matchProfileToJob(profile, job).missingSkills;
   if (missing[0])
     out.push(
-      `Spend 2-3 hours on "${missing[0]}" docs and add one tiny demo to a project — then it is truthfully on your resume.`
+      `Spend 2-3 hours on "${missing[0]}" docs and add one tiny demo to a project - then it is truthfully on your resume.`
     );
   if (missing[1])
     out.push(
@@ -155,14 +155,14 @@ function lastMinuteImprovements(
   const proj = profile.projects[0];
   if (proj)
     out.push(
-      `Add one measurable line to "${proj.title}" (users, speed, scope) — numbers survive the 10-second skim.`
+      `Add one measurable line to "${proj.title}" (users, speed, scope) - numbers survive the 10-second skim.`
     );
   out.push(
     `Fix your GitHub README for your best project: what it does, how to run it, one screenshot.`
   );
   if (matched.length)
     out.push(
-      `Mirror 2-3 exact keywords from the posting (${matched.slice(0, 3).join(", ")}) in your summary — same words, honest claims.`
+      `Mirror 2-3 exact keywords from the posting (${matched.slice(0, 3).join(", ")}) in your summary - same words, honest claims.`
     );
   return out.slice(0, 5);
 }
@@ -294,7 +294,7 @@ export function localCoverLetter(profile: UserProfile, job: Job): string {
   if (best) {
     lines.push(
       `Recently I built ${best.title}${best.techStack.length ? ` (${best.techStack.join(", ")})` : ""}` +
-        (best.description ? ` — ${best.description}` : "") +
+        (best.description ? ` - ${best.description}` : "") +
         (top ? ` This gave me hands-on practice with ${top}.` : "")
     );
     lines.push("");

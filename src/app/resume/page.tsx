@@ -272,6 +272,15 @@ export default function ResumePage() {
             })}
           </div>
           <p className="fjf-muted mt-2 text-xs">Tip: weave the ✕ keywords into your resume where they are true for you — then regenerate.</p>
+          <div className="mt-3 border-t border-[#1c1c1c] pt-3">
+            <p className="fjf-kicker mb-1.5">ATS-safe formatting (built in)</p>
+            <div className="flex flex-wrap gap-1.5">
+              {["Single column, no graphics", "Standard headings", "Plain-text bullets", "Contact in body text", "ASCII only"].map((f) => (
+                <span key={f} className="fjf-chip fjf-chip-hit text-xs">✓ {f}</span>
+              ))}
+            </div>
+            <p className="fjf-muted mt-2 text-xs">Submit section 1 as .docx or text-based PDF (never a photo/scan) in Arial or Calibri 10-12pt.</p>
+          </div>
         </Card>
       )}
 
