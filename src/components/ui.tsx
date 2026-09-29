@@ -26,7 +26,7 @@ export function MatchBadge({ score, large = false }: { score: number; large?: bo
   const stroke = large ? 6 : 5;
   const r = (size - stroke) / 2 - 1;
   const c = 2 * Math.PI * r;
-  const color = p >= 70 ? "#10b981" : p >= 45 ? "#d4d4d4" : "#6f6f6f";
+  const color = p >= 70 ? "#047857" : p >= 45 ? "#64748b" : "#cbd5e1";
   return (
     <span
       className="relative inline-flex shrink-0 items-center justify-center"
@@ -125,7 +125,7 @@ export function JobCardSkeleton() {
 export function FieldError({ message }: { message?: string }) {
   if (!message) return null;
   return (
-    <p role="alert" className="mt-1 text-xs text-[#f87171]">
+    <p role="alert" className="mt-1 text-xs text-[#dc2626]">
       {message}
     </p>
   );

@@ -90,7 +90,7 @@ export default function Home() {
       <section className="mt-10" aria-label="Promise">
         <Card className="p-6 text-center sm:p-8">
           <p className="fjf-kicker">Profile → Match → Why you match → Tailored resume → Apply</p>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#c9c9c9]">
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#475569]">
             Tell us what you can build → we&apos;ll find jobs that fit you, and show you exactly why.
           </p>
           <Link href="/dashboard" className="fjf-btn fjf-btn-ghost mt-5">

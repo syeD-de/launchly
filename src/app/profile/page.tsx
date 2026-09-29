@@ -302,7 +302,7 @@ export default function ProfilePage() {
           {saved ? (
             <span className="fjf-accent"> Drafts autosave{lastSavedAt ? ` · saved ${new Date(lastSavedAt).toLocaleTimeString()}` : ""} ✓</span>
           ) : (
-            <span className="text-amber-300/90"> Unsaved changes…</span>
+                <span className="text-amber-700"> Unsaved changes…</span>
           )}
           <br />
           <button onClick={loadDemo} className="fjf-accent underline">Just exploring? Load demo data →</button>
@@ -532,7 +532,7 @@ export default function ProfilePage() {
                 </button>
               )}
             </div>
-            {resumeFileError && <p role="alert" className="mt-2 text-xs text-red-300">{resumeFileError}</p>}
+            {resumeFileError && <p role="alert" className="mt-2 text-xs text-red-600">{resumeFileError}</p>}
             <p className="fjf-muted mt-2 text-xs">Tip: PDFs can&apos;t be read here yet — open your PDF, copy the text, and paste it above.</p>
           </Card>
 
@@ -702,7 +702,7 @@ export default function ProfilePage() {
             <Kicker>Profile strength</Kicker>
             <p className="fjf-match-ring mt-2 text-3xl font-bold">{strength.score}%</p>
             <div className="mt-3"><Progress value={strength.score} /></div>
-            <ul className="mt-3 space-y-1.5 text-xs leading-5 text-[#c9c9c9]">
+            <ul className="mt-3 space-y-1.5 text-xs leading-5 text-[#475569]">
               {strength.tips.map((t) => (
                 <li key={t} className="flex gap-1.5"><span aria-hidden className="fjf-accent">▸</span>{t}</li>
               ))}
@@ -716,7 +716,7 @@ export default function ProfilePage() {
               {saved ? (
                 <span className="fjf-accent">Saved ✓{lastSavedAt ? ` · ${new Date(lastSavedAt).toLocaleTimeString()}` : ""} · autosave on</span>
               ) : (
-                <span className="text-amber-300/90">Saving…</span>
+                <span className="text-amber-700">Saving…</span>
               )}
             </p>
           </Card>
@@ -730,7 +730,7 @@ export default function ProfilePage() {
               {!confirmWipe ? (
                 <button onClick={() => setConfirmWipe(true)} className="fjf-btn fjf-btn-ghost fjf-btn-sm">Wipe…</button>
               ) : (
-                <button onClick={wipeData} className="fjf-btn fjf-btn-ghost fjf-btn-sm !border-red-900 !text-red-300">Confirm wipe</button>
+                <button onClick={wipeData} className="fjf-btn fjf-btn-ghost fjf-btn-sm !border-red-300 !text-red-600">Confirm wipe</button>
               )}
             </div>
             {confirmWipe && (

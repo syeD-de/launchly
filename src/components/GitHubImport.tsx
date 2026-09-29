@@ -108,7 +108,7 @@ export default function GitHubImport({
           {loading ? "Fetching…" : "Fetch repos"}
         </button>
       </form>
-      {error && <p role="alert" className="mt-2 text-xs text-[#f87171]">{error}</p>}
+      {error && <p role="alert" className="mt-2 text-xs text-[#dc2626]">{error}</p>}
 
       {repos.length > 0 && (
         <ul className="mt-3 space-y-2">
@@ -117,7 +117,7 @@ export default function GitHubImport({
               imported.has(r.html_url) ||
               existingTitles.some((t) => t.toLowerCase() === r.name.replace(/[-_]+/g, " ").toLowerCase());
             return (
-              <li key={r.html_url} className="flex items-center justify-between gap-3 rounded-lg border border-[#1c1c1c] px-3 py-2">
+              <li key={r.html_url} className="flex items-center justify-between gap-3 rounded-lg border border-[#e5e7eb] px-3 py-2">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium">{r.name}</p>
                   <p className="fjf-muted truncate text-xs">

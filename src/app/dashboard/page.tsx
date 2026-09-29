@@ -236,7 +236,7 @@ export default function DashboardPage() {
       </section>
 
       {error && (
-        <Card className="border-[#4a2a2a] p-4 text-sm" >
+        <Card className="border-[#fecaca] bg-[#fef2f2] p-4 text-sm" >
           <p role="alert">{error}</p>
           <button onClick={() => profile && fetchJobs(profile)} className="fjf-btn fjf-btn-ghost fjf-btn-sm mt-3">
             Retry

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#080808",
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <Navbar />
         <div className="flex-1" id="main-content">{children}</div>
-        <footer className="border-t border-[#1c1c1c]">
+        <footer className="border-t border-[#e5e7eb]">
           <p className="fjf-muted mx-auto max-w-5xl px-6 py-5 text-xs">
             Launchly — Launching Your Career. Profile → match → why you match → tailored resume → apply.
           </p>

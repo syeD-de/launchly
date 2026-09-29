@@ -393,7 +393,7 @@ export default function JobsPage() {
                   <span className="fjf-chip mt-1.5 inline-block text-xs">🧪 Sample listing — add API keys for live jobs</span>
                 )}
                 {job.seniority === "senior" && (
-                  <p className="mt-1.5 text-xs text-amber-300/90">⚠ Looks senior-level — check requirements before applying.</p>
+                  <p className="mt-1.5 text-xs text-amber-700">⚠ Looks senior-level — check requirements before applying.</p>
                 )}
                 {status && (
                   <span className="fjf-chip fjf-chip-hit mt-1.5 inline-block text-xs">{STATUS_LABEL[status]}</span>
@@ -431,10 +431,10 @@ export default function JobsPage() {
               </div>
             )}
             {match.projectHits[0] && (
-              <p className="fjf-muted mt-2 text-xs">Best project: <span className="text-[#d4d4d4]">{match.projectHits[0]}</span></p>
+              <p className="fjf-muted mt-2 text-xs">Best project: <span className="text-[#1e293b]">{match.projectHits[0]}</span></p>
             )}
 
-            <div className="mt-4 flex gap-2 border-t border-[#1c1c1c] pt-4">
+            <div className="mt-4 flex gap-2 border-t border-[#e5e7eb] pt-4">
               <button onClick={() => viewJob(job)} className="fjf-btn fjf-btn-primary fjf-btn-sm flex-1">View job</button>
               {job.url && (
                 <a href={job.url} target="_blank" rel="noreferrer" onClick={() => onApply(job)} className="fjf-btn fjf-btn-ghost fjf-btn-sm">Apply ↗</a>

@@ -262,7 +262,7 @@ export default function ResumePage() {
       </Card>
 
       {!profile.name.trim() && profile.skills.length === 0 && profile.projects.length === 0 && (
-        <Card className="border-amber-400/30 p-5">
+        <Card className="border-amber-300 bg-amber-50 p-5">
           <p className="text-sm"><strong>Your profile is empty</strong> — so this resume is thin and the match is low. That&apos;s expected, not a bug.</p>
           <p className="fjf-muted mt-1 text-sm">Add your name, 5+ skills, and one project (10 minutes), then regenerate — watch the score and sections transform.</p>
           <Link href="/profile" className="fjf-btn fjf-btn-primary fjf-btn-sm mt-3">Complete my profile →</Link>
@@ -286,7 +286,7 @@ export default function ResumePage() {
             })}
           </div>
           <p className="fjf-muted mt-2 text-xs">Tip: weave the ✕ keywords into your resume where they are true for you — then regenerate.</p>
-          <div className="mt-3 border-t border-[#1c1c1c] pt-3">
+          <div className="mt-3 border-t border-[#e5e7eb] pt-3">
             <p className="fjf-kicker mb-1.5">ATS-safe formatting (built in)</p>
             <div className="flex flex-wrap gap-1.5">
               {["Single column, no graphics", "Standard headings", "Plain-text bullets", "Contact in body text", "ASCII only"].map((f) => (
@@ -348,7 +348,7 @@ export default function ResumePage() {
         <div className="space-y-4">
           <Card className="h-fit p-5">
             <h2 className="text-sm font-semibold">What tailoring does</h2>
-            <ul className="mt-3 space-y-2 text-sm text-[#c9c9c9]">
+            <ul className="mt-3 space-y-2 text-sm text-[#475569]">
               {["Relevant skills prioritized", "Relevant project highlighted", "Job-specific keywords included", "ATS-friendly formatting"].map((f) => (
                 <li key={f} className="flex gap-2"><span aria-hidden className="fjf-accent">✓</span>{f}</li>
               ))}
@@ -403,12 +403,12 @@ export default function ResumePage() {
               {showHistory && (
                 <ul className="mt-3 space-y-2 text-xs">
                   {history.map((h) => (
-                    <li key={h.id} className="flex items-start justify-between gap-2 border-t border-[#1c1c1c] pt-2">
+                    <li key={h.id} className="flex items-start justify-between gap-2 border-t border-[#e5e7eb] pt-2">
                       <button onClick={() => openHistoryEntry(h)} className="min-w-0 flex-1 text-left hover:underline">
                         <span className="font-medium">{h.kind === "resume" ? "Resume" : "Cover letter"}</span>
                         <span className="fjf-muted"> · {h.matchScore}% · {timeAgo(h.createdAt) || "recently"}</span>
                       </button>
-                      <button onClick={() => removeHistoryEntry(h.id)} aria-label="Delete this version" className="fjf-muted shrink-0 hover:text-white">✕</button>
+                      <button onClick={() => removeHistoryEntry(h.id)} aria-label="Delete this version" className="fjf-muted shrink-0 hover:text-[#0f172a]">✕</button>
                     </li>
                   ))}
                 </ul>
@@ -436,7 +436,7 @@ export default function ResumePage() {
           )}
           {resume && (
             <>
-              <div className="border-b border-[#1c1c1c] px-6 py-3 no-print">
+              <div className="border-b border-[#e5e7eb] px-6 py-3 no-print">
                 <p className="fjf-kicker">Preview · {profile.name || "Your resume"} → {job.title}</p>
               </div>
               <div className="px-2 py-4 sm:px-4">
@@ -446,10 +446,10 @@ export default function ResumePage() {
           )}
           {letter && (
             <Card className="overflow-hidden p-0">
-              <div className="border-b border-[#1c1c1c] px-6 py-3">
+              <div className="border-b border-[#e5e7eb] px-6 py-3">
                 <p className="fjf-kicker">Cover letter · {job.title} @ {job.company || "Company"}</p>
               </div>
-              <pre className="whitespace-pre-wrap px-6 py-5 text-sm leading-7 text-[#e8e8e8]">{letter}</pre>
+              <pre className="whitespace-pre-wrap px-6 py-5 text-sm leading-7 text-[#1f2937]">{letter}</pre>
             </Card>
           )}
         </div>

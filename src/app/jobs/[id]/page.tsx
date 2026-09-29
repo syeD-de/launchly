@@ -193,7 +193,7 @@ function JobDetailsInner() {
 
   return (
     <main className="mx-auto max-w-4xl space-y-5 px-4 py-8 sm:px-6">
-      <Link href="/jobs" className="fjf-muted text-sm hover:text-white">← All jobs</Link>
+      <Link href="/jobs" className="fjf-muted text-sm hover:text-[#0f172a]">← All jobs</Link>
 
       <Card className="p-6 sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -241,7 +241,7 @@ function JobDetailsInner() {
           </button>
         </div>
 
-        <div className="mt-4 flex flex-col gap-2 border-t border-[#1c1c1c] pt-4 sm:flex-row sm:items-center">
+        <div className="mt-4 flex flex-col gap-2 border-t border-[#e5e7eb] pt-4 sm:flex-row sm:items-center">
           <label className="fjf-muted text-xs" htmlFor="job-status">My application</label>
           <select
             id="job-status"
@@ -294,7 +294,7 @@ function JobDetailsInner() {
         </ol>
       </Card>
 
-      {job.seniority === "senior" && (        <Card className="border-amber-400/30 p-4 text-sm">
+      {job.seniority === "senior" && (        <Card className="border-amber-300 bg-amber-50 p-4 text-sm">
           <p><strong>⚠ Heads up:</strong> this posting looks senior-level (title/requirements mention seniority or years of experience). As a fresher you can still use it to spot skill gaps — or filter it out by searching “intern” / “junior” / “fresher”.</p>
         </Card>
       )}
@@ -410,7 +410,7 @@ function JobDetailsInner() {
 
       <Card className="p-6 sm:p-8">
         <h2 className="font-semibold">Job description</h2>
-        <div className="mt-3 space-y-3 text-sm leading-7 text-[#c9c9c9]">
+        <div className="mt-3 space-y-3 text-sm leading-7 text-[#475569]">
           {(job.description || "No description provided for this listing.")
             .split(/\n{2,}|\n/)
             .map((para) => para.trim())

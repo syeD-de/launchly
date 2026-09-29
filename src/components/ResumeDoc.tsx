@@ -64,7 +64,7 @@ function ResumeBody({ body }: { body: string }) {
       els.push(
         <ul key={`ul-${key}`} className="mt-1.5 space-y-1.5">
           {list.map((b, j) => (
-            <li key={j} className="flex gap-2 text-[13px] leading-6 text-[#d8d8d8]">
+            <li key={j} className="flex gap-2 text-[13px] leading-6 text-[#334155]">
               <span aria-hidden className="fjf-accent shrink-0">•</span>
               <span>{b}</span>
             </li>
@@ -82,7 +82,7 @@ function ResumeBody({ body }: { body: string }) {
     flush(i);
     if (b.kind === "name") {
       els.push(
-        <p key={i} className="text-center text-xl font-bold tracking-tight text-white">
+        <p key={i} className="text-center text-xl font-bold tracking-tight text-[#0f172a]">
           {b.text}
         </p>
       );
@@ -98,10 +98,10 @@ function ResumeBody({ body }: { body: string }) {
           {b.text}
         </p>
       );
-      els.push(<div key={`rule-${i}`} aria-hidden className="mb-2 mt-1 border-t border-[#2a2a2a]" />);
+      els.push(<div key={`rule-${i}`} aria-hidden className="mb-2 mt-1 border-t border-[#e2e8f0]" />);
     } else {
       els.push(
-        <p key={i} className="mt-1.5 text-[13px] leading-6 text-[#d8d8d8]">
+        <p key={i} className="mt-1.5 text-[13px] leading-6 text-[#334155]">
           {b.text}
         </p>
       );
@@ -127,7 +127,7 @@ export function GeneratedDoc({ text }: { text: string }) {
       </div>
       {rest.length > 0 && (
         <p className="fjf-kicker no-print">
-          🔒 Private coaching notes — <span className="text-amber-300/90">do NOT submit these</span>, they&apos;re advice for you only
+          🔒 Private coaching notes — <span className="text-amber-700">do NOT submit these</span>, they&apos;re advice for you only
         </p>
       )}
       {rest.map((s) => (
@@ -135,7 +135,7 @@ export function GeneratedDoc({ text }: { text: string }) {
           <p className="fjf-kicker mb-2">{s.heading}</p>
           <div className="fjf-card p-5">
             {/^-\s+/m.test(s.body) ? (
-              <ul className="space-y-2 text-sm leading-6 text-[#c9c9c9]">
+              <ul className="space-y-2 text-sm leading-6 text-[#475569]">
                 {s.body
                   .split("\n")
                   .map((l) => l.trim())
@@ -155,7 +155,7 @@ export function GeneratedDoc({ text }: { text: string }) {
               </div>
             ) : (
               s.body.split(/\n+/).map((p, i) => (
-                <p key={i} className="mt-2 text-sm leading-6 text-[#c9c9c9] first:mt-0">
+                <p key={i} className="mt-2 text-sm leading-6 text-[#475569] first:mt-0">
                   {p}
                 </p>
               ))
